@@ -1,0 +1,29 @@
+services:
+  backend:
+    build: .
+    container_name: goweb-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    command: npm run dev # assure le démarrage continu
+
+  postgres:
+    image: postgres:15
+    container_name: goweb-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: gowebapp
+      POSTGRES_DB: goweb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
