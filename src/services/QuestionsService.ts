@@ -1,7 +1,7 @@
 import { Question } from "../entities/Question";
 import { QuestionRepository } from "../repositories/QuestionsRepository";
 
-export class QuestionService {
+export class QuestionsService {
   static async getFirstQuestionByCategory(
     category: string
   ): Promise<Question | null> {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AnswerService } from "../services/AnswersService";
+import { AnswersService } from "../services/AnswersService";
 
 export class AnswerController {
   static async getNextQuestionFromAnswer(req: Request, res: Response) {
@@ -10,7 +10,7 @@ export class AnswerController {
     }
 
     try {
-      const answer = await AnswerService.getAnswerWithNextQuestion(id);
+      const answer = await AnswersService.getAnswerWithNextQuestion(id);
 
       if (!answer?.nextQuestion) {
         return res.status(404).json({ message: "Pas de question suivante." });

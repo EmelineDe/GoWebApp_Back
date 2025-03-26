@@ -1,0 +1,41 @@
+paths:
+  /questions/first/{category}:
+    get:
+      summary: Récupère la première question d'une catégorie
+      tags:
+        - Questions
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Première question retournée avec réponses
+        404:
+          description: Catégorie introuvable
+        500:
+          description: Erreur serveur
+
+  /questions/{id}:
+    get:
+      summary: Récupère une question par son ID
+      tags:
+        - Questions
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Question avec ses réponses
+        404:
+          description: Question non trouvée
+        500:
+          description: Erreur serveur
+
+
+

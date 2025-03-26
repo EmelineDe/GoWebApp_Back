@@ -1,118 +1,112 @@
+# 🚧 Backend - Projet Goweb (Test Technique)
 
-# Projet Goweb - Formulaire de Qualification de Chantier
-
-## Description
-
-Ce projet est une API backend permettant de gérer un formulaire de qualification de chantier. L'API repose sur une architecture Node.js avec Express, TypeScript, et une base de données PostgreSQL. Elle inclut une documentation Swagger pour faciliter l'interaction avec l'API.
-
-## Prérequis
-
-Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :
-- [Node.js](https://nodejs.org/) (version recommandée : 14.x ou supérieure)
-- [Docker](https://www.docker.com/get-started) (pour exécuter PostgreSQL et l'application)
-
-## Installation
-
-### 1. **Cloner le projet**
-
-Clonez ce projet sur votre machine locale :
-
-```bash
-git clone https://github.com/votre-utilisateur/goweb-backend.git
-cd goweb-backend
-```
-
-### 2. **Installation des dépendances**
-
-Une fois le projet cloné, installez les dépendances via npm :
-
-```bash
-npm install
-```
-
-### 3. **Configurer les variables d'environnement**
-
-Créez un fichier `.env` à la racine du projet et configurez les variables d'environnement pour la connexion à la base de données PostgreSQL :
-
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=yourpassword
-DB_NAME=gowebdb
-```
-
-### 4. **Lancer l'application avec Docker**
-
-Le projet utilise Docker pour exécuter la base de données PostgreSQL. Vous pouvez démarrer l'application avec la commande suivante :
-
-```bash
-docker compose up --build
-```
-
-Cela va :
-- Créer les conteneurs nécessaires pour l'application et la base de données.
-- Démarrer l'API backend sur `http://localhost:3000`.
-
-### 5. **Accéder à l'API**
-
-L'API est maintenant en cours d'exécution. Vous pouvez accéder à la documentation interactive Swagger à l'adresse suivante :
-
-```
-http://localhost:3000/api-docs
-```
-
-Vous y trouverez toutes les routes de l'API ainsi que la possibilité de les tester directement.
+Ce backend constitue la partie API de l'application Goweb.  
+Il permet de construire dynamiquement un parcours de questions/réponses pour qualifier une demande de dépannage (cas POC : plomberie).
 
 ---
 
-## Tests
+## 🧹 Stack technique
 
-### 1. **Exécuter les tests unitaires**
-
-Des tests unitaires ont été configurés avec Jest. Pour les exécuter, utilisez la commande suivante :
-
-```bash
-npm run test
-```
-
-Cela lancera Jest et exécutera les tests définis dans le projet.
+- **Node.js** + **Express**
+- **TypeORM** + **PostgreSQL**
+- **Zod** 
+- **Swagger** 
+- **Docker / Docker Compose**
 
 ---
 
-## Structure du projet
-
-Voici un aperçu de la structure des répertoires de l'application :
+## 📁 Structure du projet
 
 ```
-/goweb-backend
-│
-├── /src
-│   ├── /config        # Configuration (ex: connexion à la BDD)
-│   ├── /controllers   # Logique métier des routes
-│   ├── /routes        # Définition des routes de l'API
-│   ├── /services      # Services métier
-│   ├── /validators    # Validation des données (ex: avec Zod)
-│   ├── app.ts         # Configuration de l'application Express
-│   └── server.ts      # Lancement du serveur
-│
-├── /docker-compose.yml  # Configuration Docker
-├── /Dockerfile          # Dockerfile pour l'application
-├── .env                # Fichier des variables d'environnement (exclu de Git)
-├── package.json        # Dépendances du projet
-├── jest.config.js      # Configuration des tests Jest
-└── README.md           # Ce fichier
+src/
+├── controllers/         → Logique des routes
+├── entities/            → Modélisation BDD (TypeORM)
+├── DTO/                 → Objets de transfert typés
+├── services/            → Logique métier
+├── repositories/        → Accès BDD
+├── validators/          → Schémas Zod
+├── routes/              → Routes Express
+├── seeds/               → Script d’initialisation des questions/réponses
+├── config/              → Connexion BDD, Swagger, etc.
+├── app.ts               → Configuration Express
+└── server.ts            → Démarrage de l'app
 ```
 
 ---
 
-## Aide & Support
+## ⚙️ Prérequis
 
-Si vous avez des questions ou avez besoin d'aide, n'hésitez pas à ouvrir une **issue** sur GitHub ou à me contacter directement.
+- [Node.js v20+](https://nodejs.org/)
+- [Docker & Docker Compose](https://www.docker.com/)
+- Un outil de requête API (Postman, Thunder Client...)
 
 ---
 
-## License
+## 🚀 Installation & Démarrage
 
-Ce projet est sous la licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
-#
+### 1. Dézippez le projet
+Aucun `git clone` requis. Ouvrez simplement le dossier dézippé avec votre IDE.
+
+### 2. Lancer les conteneurs
+
+```bash
+docker-compose up -d
+```
+
+Ce qui démarre :
+- `goweb-db` (PostgreSQL)
+- `goweb-backend` (API)
+
+📦 Base de données exposée sur `localhost:5432`
+
+---
+
+### 3. Initialiser les données de base
+
+> Insère toutes les questions/réponses du parcours "Plomberie"
+
+```bash
+docker exec -it goweb-backend npm run seed
+```
+
+✅ Les données sont persistées dans PostgreSQL.
+
+---
+
+## 📚 Accès à l'API
+
+- **Base URL** : `http://localhost:3000/api`
+- **Swagger** : [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+
+---
+
+## 🥪 Endpoints principaux
+
+| Méthode | Endpoint                    | Description                         |
+|--------:|-----------------------------|-------------------------------------|
+| `GET`   | `/questions/first/:cat`     | Première question d'une catégorie   |
+| `GET`   | `/questions/:id`            | Question par ID (avec réponses)     |
+| `GET`   | `/answers/:id/next`         | Question suivante via une réponse   |
+| `POST`  | `/user`                     | Enregistrer un utilisateur          |
+| `POST`  | `/user-answers`             | Enregistrer ses réponses            |
+| `GET`   | `/user/:id`                 | Voir ses réponses enregistrées      |
+
+---
+
+## 💬 Infos utiles
+
+- Les entités sont reliées avec des relations TypeORM (`OneToMany`, `ManyToOne`)
+- L'enchaînement dynamique du formulaire est géré via `Answer.nextQuestionId`
+- Les validations côté serveur utilisent **Zod**
+- Typage strict avec des **DTOs**
+
+
+---
+
+
+## 🤝 Auteur
+
+Réalisé par Emeline Delobel dans le cadre du test technique pour **Goweb**
+
+---
+

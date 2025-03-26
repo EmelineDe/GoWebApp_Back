@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { QuestionService } from "../services/QuestionsService";
+import { QuestionsService } from "../services/QuestionsService";
 
 export class QuestionController {
   // Méthode pour obtenir la première question d'une catégorie
@@ -7,7 +7,7 @@ export class QuestionController {
     try {
       const { category } = req.params;
 
-      const question = await QuestionService.getFirstQuestionByCategory(
+      const question = await QuestionsService.getFirstQuestionByCategory(
         category
       );
 
@@ -26,7 +26,7 @@ export class QuestionController {
     try {
       const { id } = req.params;
 
-      const question = await QuestionService.getQuestionById(parseInt(id));
+      const question = await QuestionsService.getQuestionById(parseInt(id));
 
       if (!question) {
         return res.status(404).json({ message: "Question non trouvée" });

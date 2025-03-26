@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { userAnswerSchema } from "./userAnswerValidator";
+import { userAnswerItemSchema } from "./userAnswerValidator";
 
 export const userSchema = z.object({
   firstName: z.string().min(1, "Le prénom est requis"),
@@ -15,5 +15,5 @@ export const userSchema = z.object({
       message: "Le mode de paiement doit être 'online' ou 'in-person'",
     }),
   }),
-  answers: z.array(userAnswerSchema).optional(),
+  answers: z.array(userAnswerItemSchema).optional(),
 });

@@ -1,7 +1,7 @@
 import { Answer } from "../entities/Answer";
 import { AnswersRepository } from "../repositories/AnswersRepository";
 
-export class AnswerService {
+export class AnswersService {
   static async getAnswerWithNextQuestion(id: number): Promise<Answer | null> {
     return AnswersRepository.findByIdWithNextQuestion(id);
   }

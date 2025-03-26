@@ -1,0 +1,20 @@
+paths:
+  /answers/{id}/next:
+    get:
+      summary: Récupère la question suivante à partir d'une réponse
+      tags:
+        - Answers
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Question suivante retournée
+        404:
+          description: Pas de question suivante
+        500:
+          description: Erreur serveur
+

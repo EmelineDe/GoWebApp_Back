@@ -1,0 +1,50 @@
+paths:
+  /user-answers:
+    post:
+      summary: Enregistre les réponses d'un utilisateur
+      tags:
+        - UserAnswers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAnswerPayload'
+      responses:
+        201:
+          description: Réponses enregistrées
+        400:
+          description: Données invalides
+        500:
+          description: Erreur serveur
+
+components:
+  schemas:
+    UserAnswerPayload:
+      type: object
+      required:
+        - userId
+        - answers
+      properties:
+        userId:
+          type: integer
+          description: ID de l'utilisateur
+        answers:
+          type: array
+          description: Liste des réponses sélectionnées
+          items:
+            $ref: '#/components/schemas/AnswerItem'
+      example:
+        userId: 1
+        answers:
+          - answerId: 3
+          - answerId: 6
+
+    AnswerItem:
+      type: object
+      properties:
+        answerId:
+          type: integer
+          description: ID de la réponse sélectionnée
+
+

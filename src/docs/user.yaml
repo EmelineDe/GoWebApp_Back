@@ -1,0 +1,77 @@
+paths:
+  /user:
+    post:
+      summary: Crée un nouvel utilisateur
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Utilisateur créé
+        400:
+          description: Données invalides
+        500:
+          description: Erreur serveur
+
+  /user/{id}:
+    get:
+      summary: Récupère un utilisateur avec ses réponses enregistrées
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Utilisateur avec ses réponses
+        400:
+          description: ID invalide
+        404:
+          description: Utilisateur non trouvé
+        500:
+          description: Erreur serveur
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - address
+        - zipCode
+        - phoneNumber
+        - email
+        - paymentMethod
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          type: string
+        zipCode:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        paymentMethod:
+          type: string
+          enum: [online, in-person]
+      example:
+        firstName: Jean
+        lastName: Dupont
+        address: 12 rue des Lilas
+        zipCode: "75012"
+        phoneNumber: "0601020304"
+        email: jean.dupont@email.com
+        paymentMethod: online
