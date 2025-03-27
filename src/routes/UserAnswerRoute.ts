@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Routes pour la gestion des réponses utilisateur
+ * @module routes/UserAnswerRoute
+ */
+
 import { Router, Request, Response } from "express";
 import { UserAnswerController } from "../controllers/UserAnswerController";
 

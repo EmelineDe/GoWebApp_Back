@@ -1,7 +1,30 @@
+/**
+ * @fileoverview Script d'initialisation des questions et réponses dans la base de données
+ * @module seeds/seedQuestionsAnswers
+ */
+
 import { AppDataSource } from "../config/data-source";
 import { Question } from "../entities/Question";
 import { Answer } from "../entities/Answer";
 
+/**
+ * Initialise la base de données avec les questions et réponses par défaut
+ * @async
+ * @function seedQuestionsAnswers
+ * @description Ce script crée une structure de questions et réponses pour le diagnostic
+ * de problèmes de plomberie. Il crée :
+ * - Une question initiale pour identifier le type de problème
+ * - Des questions détaillées liées aux réponses précédentes
+ * - Des réponses associées à chaque question
+ * - Des liens entre les réponses et les questions suivantes
+ *
+ * La structure est organisée en niveaux :
+ * - Niveau 1 : Question initiale sur la localisation du problème
+ * - Niveau 2 : Questions sur la nature du problème
+ * - Niveau 3 : Questions spécifiques selon les réponses précédentes
+ *
+ * @throws {Error} Si une erreur survient lors de l'initialisation de la base de données
+ */
 const seedQuestionsAnswers = async () => {
   await AppDataSource.initialize();
 
@@ -76,7 +99,7 @@ const seedQuestionsAnswers = async () => {
       answers: ["oui", "non"],
     },
     {
-      text: "D’où coule l’eau ?",
+      text: "D'où coule l'eau ?",
       category: "Plomberie",
       level: 3,
       parentAnswerText: [
@@ -90,8 +113,8 @@ const seedQuestionsAnswers = async () => {
         "Au niveau du siphon",
         "Au niveau des flexibles",
         "Du robinet",
-        "Du tuyau d’évacuation (sous la douche)",
-        "Du tuyau d’évacuation",
+        "Du tuyau d'évacuation (sous la douche)",
+        "Du tuyau d'évacuation",
         "Inconnu",
       ],
     },
@@ -168,4 +191,5 @@ const seedQuestionsAnswers = async () => {
   await AppDataSource.destroy();
 };
 
+// Exécute le script de seeding
 seedQuestionsAnswers().catch(console.error);

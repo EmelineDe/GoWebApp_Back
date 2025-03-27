@@ -1,6 +1,24 @@
+/**
+ * @fileoverview Schéma de validation pour les données utilisateur
+ * @module validators/userValidator
+ */
+
 import { z } from "zod";
 import { userAnswerItemSchema } from "./userAnswerValidator";
 
+/**
+ * Schéma de validation pour les données utilisateur
+ * @type {z.ZodObject}
+ * @description Valide les données d'un utilisateur avec les règles suivantes :
+ * - firstName : chaîne non vide
+ * - lastName : chaîne non vide
+ * - address : chaîne non vide
+ * - zipCode : chaîne non vide
+ * - phoneNumber : chaîne d'au moins 10 caractères
+ * - email : format email valide
+ * - paymentMethod : 'online' ou 'in-person'
+ * - answers : tableau optionnel de réponses utilisateur
+ */
 export const userSchema = z.object({
   firstName: z.string().min(1, "Le prénom est requis"),
   lastName: z.string().min(1, "Le nom est requis"),

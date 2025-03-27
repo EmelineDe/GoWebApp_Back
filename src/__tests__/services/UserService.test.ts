@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Tests du service utilisateur
+ * @module tests/services/UserService.test
+ */
+
 import { UserService } from "../../services/UserService";
 import { UserRepository } from "../../repositories/UserRepository";
 import { User } from "../../entities/User";
@@ -6,12 +11,24 @@ import { UserDTO } from "../../DTO/UserDTO";
 // Mock du repository
 jest.mock("../../repositories/UserRepository");
 
+/**
+ * Tests du service utilisateur
+ * @describe UserService
+ */
 describe("UserService", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Tests de la méthode createUser
+   * @describe createUser
+   */
   describe("createUser", () => {
+    /**
+     * Vérifie la création réussie d'un utilisateur
+     * @test
+     */
     it("should create a user successfully", async () => {
       const mockUserData: UserDTO = {
         firstName: "John",
@@ -37,6 +54,10 @@ describe("UserService", () => {
       expect(result).toEqual(mockUser);
     });
 
+    /**
+     * Vérifie la gestion des erreurs lors de la création d'un utilisateur
+     * @test
+     */
     it("should throw an error if user creation fails", async () => {
       const mockUserData: UserDTO = {
         firstName: "John",
@@ -58,7 +79,15 @@ describe("UserService", () => {
     });
   });
 
+  /**
+   * Tests de la méthode getUserWithAnswers
+   * @describe getUserWithAnswers
+   */
   describe("getUserWithAnswers", () => {
+    /**
+     * Vérifie le retour d'un utilisateur avec ses réponses s'il est trouvé
+     * @test
+     */
     it("should return user with answers if found", async () => {
       const mockUser = {
         id: 1,
@@ -80,6 +109,10 @@ describe("UserService", () => {
       expect(result).toEqual(mockUser);
     });
 
+    /**
+     * Vérifie le retour null quand l'utilisateur n'est pas trouvé
+     * @test
+     */
     it("should return null if user not found", async () => {
       (UserRepository.findById as jest.Mock).mockResolvedValue(null);
 

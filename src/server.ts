@@ -1,11 +1,20 @@
+/**
+ * @fileoverview Point d'entrée principal de l'application
+ * @module server
+ */
+
 import "reflect-metadata";
 import dotenv from "dotenv";
 import app from "./app";
 import { AppDataSource } from "./config/data-source";
 
 dotenv.config();
-console.log("✅ Mot de passe utilisé :", process.env.DB_PASSWORD);
 
+/**
+ * Initialise la connexion à la base de données et démarre le serveur
+ * @async
+ * @throws {Error} Erreur de connexion à la base de données
+ */
 AppDataSource.initialize()
   .then(() => {
     console.log("📦 Connected to PostgreSQL");

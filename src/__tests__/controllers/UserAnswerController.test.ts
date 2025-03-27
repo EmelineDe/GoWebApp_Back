@@ -1,9 +1,18 @@
+/**
+ * @fileoverview Tests du contrôleur de réponses utilisateur
+ * @module tests/controllers/UserAnswerController.test
+ */
+
 import { Request, Response } from "express";
 import { UserAnswerController } from "../../controllers/UserAnswerController";
 import { UserAnswerService } from "../../services/UserAnswerService";
 
 jest.mock("../../services/UserAnswerService");
 
+/**
+ * Tests du contrôleur de réponses utilisateur
+ * @describe UserAnswerController
+ */
 describe("UserAnswerController", () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
@@ -21,7 +30,15 @@ describe("UserAnswerController", () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Tests de la méthode saveUserAnswers
+   * @describe saveUserAnswers
+   */
   describe("saveUserAnswers", () => {
+    /**
+     * Vérifie la sauvegarde réussie des réponses utilisateur
+     * @test
+     */
     it("should save user answers successfully", async () => {
       const mockAnswers = [
         { userId: 1, answerId: 1 },
@@ -49,6 +66,10 @@ describe("UserAnswerController", () => {
       expect(mockJson).toHaveBeenCalledWith(mockAnswers);
     });
 
+    /**
+     * Vérifie la gestion des erreurs lors de la sauvegarde des réponses
+     * @test
+     */
     it("should handle errors when saving answers", async () => {
       mockRequest.body = {
         userId: 1,
@@ -71,6 +92,10 @@ describe("UserAnswerController", () => {
       });
     });
 
+    /**
+     * Vérifie que 400 est retourné si les données sont invalides
+     * @test
+     */
     it("should return 400 if data is invalid", async () => {
       mockRequest.body = {};
 

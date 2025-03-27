@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Tests du service de réponses utilisateur
+ * @module tests/services/UserAnswerService.test
+ */
+
 import { UserAnswerService } from "../../services/UserAnswerService";
 import { UserAnswerRepository } from "../../repositories/UserAnswerRepository";
 import { UserAnswerDTO } from "../../DTO/UserAnswerDTO";
@@ -5,12 +10,24 @@ import { UserAnswerDTO } from "../../DTO/UserAnswerDTO";
 // Mock du repository
 jest.mock("../../repositories/UserAnswerRepository");
 
+/**
+ * Tests du service de réponses utilisateur
+ * @describe UserAnswerService
+ */
 describe("UserAnswerService", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Tests de la méthode saveUserAnswers
+   * @describe saveUserAnswers
+   */
   describe("saveUserAnswers", () => {
+    /**
+     * Vérifie la sauvegarde réussie des réponses utilisateur
+     * @test
+     */
     it("should save user answers successfully", async () => {
       const mockAnswers: UserAnswerDTO[] = [
         { userId: 1, answerId: 1 },
@@ -43,6 +60,10 @@ describe("UserAnswerService", () => {
       expect(result).toEqual(mockSavedAnswers);
     });
 
+    /**
+     * Vérifie la gestion des erreurs lors de la sauvegarde des réponses
+     * @test
+     */
     it("should throw an error if saving answers fails", async () => {
       const mockAnswers: UserAnswerDTO[] = [{ userId: 1, answerId: 1 }];
 

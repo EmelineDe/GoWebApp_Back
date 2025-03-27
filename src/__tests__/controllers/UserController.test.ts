@@ -1,9 +1,18 @@
+/**
+ * @fileoverview Tests du contrôleur d'utilisateurs
+ * @module tests/controllers/UserController.test
+ */
+
 import { Request, Response } from "express";
 import { UserController } from "../../controllers/UserController";
 import { UserService } from "../../services/UserService";
 
 jest.mock("../../services/UserService");
 
+/**
+ * Tests du contrôleur d'utilisateurs
+ * @describe UserController
+ */
 describe("UserController", () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
@@ -21,7 +30,15 @@ describe("UserController", () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Tests de la méthode createUser
+   * @describe createUser
+   */
   describe("createUser", () => {
+    /**
+     * Vérifie la création réussie d'un utilisateur
+     * @test
+     */
     it("should create user successfully", async () => {
       const userData = {
         firstName: "Jean",
@@ -49,6 +66,10 @@ describe("UserController", () => {
       expect(mockJson).toHaveBeenCalledWith({ id: 1, ...userData });
     });
 
+    /**
+     * Vérifie la gestion des erreurs de validation
+     * @test
+     */
     it("should handle validation errors", async () => {
       mockRequest.body = {}; // invalide
 
@@ -63,6 +84,10 @@ describe("UserController", () => {
       );
     });
 
+    /**
+     * Vérifie la gestion des erreurs lors de la création d'un utilisateur
+     * @test
+     */
     it("should handle errors when creating a user", async () => {
       const userData = {
         firstName: "Jean",
@@ -92,7 +117,15 @@ describe("UserController", () => {
     });
   });
 
+  /**
+   * Tests de la méthode getUserWithAnswers
+   * @describe getUserWithAnswers
+   */
   describe("getUserWithAnswers", () => {
+    /**
+     * Vérifie le retour d'un utilisateur avec ses réponses
+     * @test
+     */
     it("should return user with answers", async () => {
       const mockUser = {
         id: 1,
@@ -113,6 +146,10 @@ describe("UserController", () => {
       expect(mockJson).toHaveBeenCalledWith(mockUser);
     });
 
+    /**
+     * Vérifie le retour de 400 si l'ID est invalide
+     * @test
+     */
     it("should return 400 if id is invalid", async () => {
       mockRequest.params = { id: "abc" };
 
@@ -125,6 +162,10 @@ describe("UserController", () => {
       expect(mockJson).toHaveBeenCalledWith({ error: "ID invalide." });
     });
 
+    /**
+     * Vérifie le retour de 404 si l'utilisateur n'est pas trouvé
+     * @test
+     */
     it("should return 404 if user not found", async () => {
       mockRequest.params = { id: "99" };
       (UserService.getUserWithAnswers as jest.Mock).mockResolvedValue(null);
@@ -140,6 +181,10 @@ describe("UserController", () => {
       });
     });
 
+    /**
+     * Vérifie la gestion des erreurs lors de la récupération d'un utilisateur
+     * @test
+     */
     it("should handle errors when getting user", async () => {
       mockRequest.params = { id: "1" };
       (UserService.getUserWithAnswers as jest.Mock).mockRejectedValue(

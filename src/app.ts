@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Configuration principale de l'application Express
+ * @module app
+ */
+
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger";
@@ -19,7 +24,11 @@ app.use("/api", answerRoutes);
 app.use("/api", userRoutes);
 app.use("/api", userAnswerRoutes);
 
-// Route de test
+/**
+ * Route de base pour vérifier l'état du serveur
+ * @route GET /
+ * @returns {Object} Message de confirmation du fonctionnement du serveur
+ */
 app.get("/", (req, res) => {
   res.status(200).json({ message: "🚀 Backend opérationnel" });
 });
