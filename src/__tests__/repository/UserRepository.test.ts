@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Tests du dépôt utilisateur
+ * @module tests/repositories/UserRepository.test
+ */
+
 import { AppDataSource } from "../../config/data-source";
 import { UserRepository } from "../../repositories/UserRepository";
 import { User } from "../../entities/User";
@@ -10,6 +15,10 @@ jest.mock("../../config/data-source", () => ({
   },
 }));
 
+/**
+ * Tests du dépôt UserRepository
+ * @describe UserRepository
+ */
 describe("UserRepository", () => {
   const mockSave = jest.fn();
   const mockFindOne = jest.fn();
@@ -24,6 +33,10 @@ describe("UserRepository", () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Vérifie la création d’un utilisateur avec ses informations
+   * @test
+   */
   it("should create a user", async () => {
     const userData: Partial<User> = {
       firstName: "Alice",
@@ -47,6 +60,10 @@ describe("UserRepository", () => {
     expect(result).toEqual(createdUser);
   });
 
+  /**
+   * Vérifie la récupération d’un utilisateur avec ses réponses et questions associées
+   * @test
+   */
   it("should find user with answers", async () => {
     const mockUser: User = {
       id: 1,
