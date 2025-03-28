@@ -30,8 +30,12 @@ export class AnswerController {
     try {
       const answer = await AnswersService.getAnswerWithNextQuestion(id);
 
+      if (!answer) {
+        return res.status(404).json({ error: "Réponse introuvable." });
+      }
+
       if (!answer?.nextQuestion) {
-        return res.status(404).json({ message: "Pas de question suivante." });
+        return res.status(200).json({ finished: true });
       }
 
       return res.status(200).json(answer.nextQuestion);

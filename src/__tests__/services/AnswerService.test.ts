@@ -33,6 +33,7 @@ describe("AnswersService", () => {
       const mockAnswer = {
         id: 1,
         text: "Réponse",
+        displayText: "Réponse",
         questionId: 1,
         nextQuestion: {
           id: 2,

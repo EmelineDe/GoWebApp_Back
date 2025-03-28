@@ -29,6 +29,13 @@ export class Answer {
   text!: string;
 
   /**
+   * Texte affiché de la réponse
+   * @type {string}
+   */
+  @Column()
+  displayText!: string;
+
+  /**
    * Question associée à cette réponse
    * @type {Question}
    */

@@ -43,7 +43,11 @@ describe("AnswersRepository", () => {
     const result = await AnswersRepository.findByIdWithNextQuestion(1);
     expect(mockFindOne).toHaveBeenCalledWith({
       where: { id: 1 },
-      relations: ["nextQuestion"],
+      relations: {
+        nextQuestion: {
+          answers: true,
+        },
+      },
     });
     expect(result).toEqual(mockAnswer);
   });

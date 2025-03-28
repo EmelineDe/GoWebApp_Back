@@ -100,6 +100,7 @@ describe("QuestionsService", () => {
         {
           id: 1,
           text: "Réponse 1",
+          displayText: "Réponse 1",
           question: {} as Question,
         },
       ];

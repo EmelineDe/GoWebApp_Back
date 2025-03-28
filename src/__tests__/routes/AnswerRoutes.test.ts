@@ -55,8 +55,8 @@ describe("Answer Routes", () => {
 
     const res = await request(app).get("/api/answers/1/next");
 
-    expect(res.status).toBe(404);
-    expect(res.body).toEqual({ message: "Pas de question suivante." });
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ finished: true });
   });
 
   /**

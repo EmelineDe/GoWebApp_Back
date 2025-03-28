@@ -10,9 +10,11 @@ import questionRoutes from "./routes/QuestionsRoutes";
 import answerRoutes from "./routes/AnswerRoutes";
 import userRoutes from "./routes/UserRoute";
 import userAnswerRoutes from "./routes/UserAnswerRoute";
+import cors from "cors";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 // Documentation Swagger

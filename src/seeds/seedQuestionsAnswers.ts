@@ -1,195 +1,335 @@
 /**
- * @fileoverview Script d'initialisation des questions et réponses dans la base de données
- * @module seeds/seedQuestionsAnswers
+ * @fileoverview Nouveau seed structurant les questions/réponses par niveau 1 > 2 > 3
  */
 
 import { AppDataSource } from "../config/data-source";
 import { Question } from "../entities/Question";
 import { Answer } from "../entities/Answer";
 
-/**
- * Initialise la base de données avec les questions et réponses par défaut
- * @async
- * @function seedQuestionsAnswers
- * @description Ce script crée une structure de questions et réponses pour le diagnostic
- * de problèmes de plomberie. Il crée :
- * - Une question initiale pour identifier le type de problème
- * - Des questions détaillées liées aux réponses précédentes
- * - Des réponses associées à chaque question
- * - Des liens entre les réponses et les questions suivantes
- *
- * La structure est organisée en niveaux :
- * - Niveau 1 : Question initiale sur la localisation du problème
- * - Niveau 2 : Questions sur la nature du problème
- * - Niveau 3 : Questions spécifiques selon les réponses précédentes
- *
- * @throws {Error} Si une erreur survient lors de l'initialisation de la base de données
- */
 const seedQuestionsAnswers = async () => {
   await AppDataSource.initialize();
 
   const questionRepo = AppDataSource.getRepository(Question);
   const answerRepo = AppDataSource.getRepository(Answer);
 
-  const questionsData = [
+  const level1Question = questionRepo.create({
+    text: "où se situe votre problème ?",
+    category: "plomberie",
+    level: 1,
+  });
+  await questionRepo.save(level1Question);
+
+  const level1Answers = [
+    { text: "wc", displayText: "wc" },
+    { text: "lavabo", displayText: "lavabo" },
+    { text: "douche", displayText: "douche" },
     {
-      text: "Où se situe votre problème ?",
-      category: "Plomberie",
-      level: 1,
+      text: "colonne générale d'immeuble",
+      displayText: "colonne générale d'immeuble",
+    },
+    { text: "tuyauterie", displayText: "tuyauterie" },
+    { text: "chaudière", displayText: "chaudière" },
+    {
+      text: "tuyau de la machine à laver / du lave-vaisselle",
+      displayText: "tuyau de la machine à laver / du lave-vaisselle",
+    },
+    { text: "autre", displayText: "autre" },
+  ];
+
+  const answerMap: Record<string, Answer> = {};
+
+  for (const text of level1Answers) {
+    const answer = answerRepo.create({
+      text: text.text,
+      displayText: text.displayText,
+      question: level1Question,
+    });
+    await answerRepo.save(answer);
+    answerMap[text.text.toLowerCase()] = answer;
+  }
+
+  const level2Questions = [
+    {
+      parent: "wc",
+      text: "quelle est la nature de votre problème ?",
       answers: [
-        { text: "WC" },
-        { text: "Lavabo" },
-        { text: "Douche" },
-        { text: "Colonne générale d'immeuble" },
-        { text: "Tuyauterie" },
-        { text: "Chaudière" },
-        { text: "Tuyau de la machine à laver / du lave-vaisselle" },
-        { text: "Autre" },
+        {
+          text: "engorgement (wc bouchés)",
+          displayText: "engorgement (wc bouchés)",
+        },
+        {
+          text: "fuite (recherche de fuite)",
+          displayText: "fuite (recherche de fuite)",
+        },
+        {
+          text: "problème de fonctionnement (cuvette...)",
+          displayText: "problème de fonctionnement (cuvette...)",
+        },
+        { text: "changement de wc", displayText: "changement de wc" },
+      ],
+    },
+    {
+      parent: "lavabo",
+      text: "quelle est la nature de votre problème ?",
+      answers: [
+        {
+          text: "engorgement (lavabo / évier bouché)",
+          displayText: "engorgement (lavabo / évier bouché)",
+        },
+        { text: "fuite / robinetterie", displayText: "fuite / robinetterie" },
+        { text: "autre(lavabo)", displayText: "autre" },
+      ],
+    },
+    {
+      parent: "douche",
+      text: "quelle est la nature de votre problème ?",
+      answers: [
+        {
+          text: "engorgement de douche (bouchée)",
+          displayText: "engorgement de douche (bouchée)",
+        },
+        {
+          text: "engorgement de baignoire (bouchée)",
+          displayText: "engorgement de baignoire (bouchée)",
+        },
+        { text: "fuite de douche", displayText: "fuite de douche" },
+        { text: "fuite de baignoire", displayText: "fuite de baignoire" },
+        { text: "autre(douche)", displayText: "autre" },
+      ],
+    },
+    {
+      parent: "tuyauterie",
+      text: "vous avez une fuite au niveau ?",
+      answers: [
+        {
+          text: "d'un tuyau d’évacuation (tuyau PVC)",
+          displayText: "d'un tuyau d’évacuation (tuyau PVC)",
+        },
+        { text: "de la vanne d’entrée", displayText: "de la vanne d’entrée" },
+        { text: "d'un autre tuyau", displayText: "d'un autre tuyau" },
+        {
+          text: "je ne vois pas (recherche d'une fuite)",
+          displayText: "je ne vois pas (recherche d'une fuite)",
+        },
+      ],
+    },
+    {
+      parent: "chaudière",
+      text: "quel est votre besoin ?",
+      answers: [
+        {
+          text: "réparation d'une panne",
+          displayText: "réparation d'une panne",
+        },
+        {
+          text: "souscription d'un contrat d'entretien",
+          displayText: "souscription d'un contrat d'entretien",
+        },
+        {
+          text: "réparation d'une fuite du ballon d'eau chaude",
+          displayText: "réparation d'une fuite du ballon d'eau chaude",
+        },
+        { text: "autre(chaudière)", displayText: "autre" },
+        { text: "installation", displayText: "installation" },
       ],
     },
   ];
 
-  for (const qData of questionsData) {
+  for (const lvl2 of level2Questions) {
     const question = questionRepo.create({
-      text: qData.text,
-      category: qData.category,
-      level: qData.level,
+      text: lvl2.text,
+      category: "plomberie",
+      level: 2,
     });
     await questionRepo.save(question);
 
-    for (const ans of qData.answers) {
+    for (const ansText of lvl2.answers) {
       const answer = answerRepo.create({
-        text: ans.text,
+        text: ansText.text,
+        displayText: ansText.displayText,
         question,
       });
       await answerRepo.save(answer);
     }
+
+    const parent = answerMap[lvl2.parent];
+    parent.nextQuestion = question;
+    await answerRepo.save(parent);
   }
 
-  const detailedQuestions = [
+  const level3Questions = [
     {
-      text: "Quelle est la nature de votre problème ?",
-      category: "Plomberie",
-      level: 2,
-      parentAnswerText: ["WC"],
+      parentAnswers: [
+        "engorgement (wc bouchés)",
+        "fuite (recherche de fuite)",
+        "problème de fonctionnement (cuvette...)",
+        "changement de wc",
+      ],
+      text: "quel type de WC possédez-vous ?",
       answers: [
-        "Engorgement (WC bouchés)",
-        "Fuite (recherche de fuite)",
-        "Problème de fonctionnement (cuvette...)",
-        "Changement de WC",
+        { text: "wc simple", displayText: "wc simple" },
+        { text: "wc suspendu", displayText: "wc suspendu" },
+        { text: "autre", displayText: "autre" },
       ],
     },
     {
-      text: "Quel type de WC possédez-vous ?",
-      category: "Plomberie",
-      level: 3,
-      parentAnswerText: [
-        "Engorgement (WC bouchés)",
-        "Fuite (recherche de fuite)",
-        "Problème de fonctionnement (cuvette...)",
-        "Changement de WC",
-      ],
-      answers: ["WC simple", "WC suspendu", "Autre"],
-    },
-    {
-      text: "Votre lavabo possède-t-il un sanispeed ?",
-      category: "Plomberie",
-      level: 3,
-      parentAnswerText: ["Engorgement (lavabo / évier bouché)"],
-      answers: ["oui", "non"],
-    },
-    {
-      text: "D'où coule l'eau ?",
-      category: "Plomberie",
-      level: 3,
-      parentAnswerText: [
-        "Fuite / robinetterie",
-        "Fuite de douche",
-        "Fuite de baignoire",
-      ],
+      parentAnswers: ["engorgement (lavabo / évier bouché)"],
+      text: "votre lavabo possède-t-il un sanispeed ?",
       answers: [
-        "Autour du robinet",
-        "Directement du robinet",
-        "Au niveau du siphon",
-        "Au niveau des flexibles",
-        "Du robinet",
-        "Du tuyau d'évacuation (sous la douche)",
-        "Du tuyau d'évacuation",
-        "Inconnu",
+        { text: "oui", displayText: "oui" },
+        { text: "non", displayText: "non" },
       ],
     },
     {
-      text: "Voulez-vous effectuer ?",
-      category: "Plomberie",
-      level: 3,
-      parentAnswerText: ["Autre"],
+      parentAnswers: ["fuite / robinetterie"],
+      text: "d'où coule l'eau ?",
       answers: [
-        "Changement de lavabo / évier",
-        "Installation d'un robinet",
-        "Installation de bac à douche",
-        "Installation de baignoire",
-        "Autre problème avec la douche",
-        "Autre problème avec la baignoire",
-        "Réfection des joints de la douche / baignoire",
-        "Autre",
+        { text: "autour du robinet", displayText: "autour du robinet" },
+        {
+          text: "directement du robinet",
+          displayText: "directement du robinet",
+        },
+        { text: "au niveau du siphon", displayText: "au niveau du siphon" },
+        {
+          text: "au niveau des flexibles",
+          displayText: "au niveau des flexibles",
+        },
       ],
     },
     {
-      text: "Quel type de recherche de fuite souhaitez-vous ?",
-      category: "Plomberie",
-      level: 3,
-      parentAnswerText: ["Je ne vois pas (recherche d'une fuite)"],
-      answers: ["Recherche de fuite simple", "Recherche de fuite encastrée"],
-    },
-    {
-      text: "Votre problème est lié ?",
-      category: "Plomberie",
-      level: 3,
-      parentAnswerText: ["Réparation d'une panne"],
+      parentAnswers: ["autre(lavabo)"],
+      text: "voulez-vous effectuer ?",
       answers: [
-        "Au chauffage",
-        "À l'eau chaude",
-        "Au chauffage et à l'eau chaude",
+        {
+          text: "changement de lavabo / évier",
+          displayText: "changement de lavabo / évier",
+        },
+        {
+          text: "installation d'un robinet",
+          displayText: "installation d'un robinet",
+        },
+        { text: "autre", displayText: "autre" },
       ],
     },
     {
-      text: "Quel objet est concerné par votre demande ?",
-      category: "Plomberie",
-      level: 3,
-      parentAnswerText: ["Installation"],
+      parentAnswers: ["fuite de douche"],
+      text: "d'où coule l'eau ?",
       answers: [
-        "Chaudière",
-        "Chauffe-eau / chauffe-bain",
-        "Ballon d'eau chaude",
-        "Radiateur électrique / sèche-serviettes",
+        { text: "du robinet", displayText: "du robinet" },
+        {
+          text: "du tuyau d'évacuation (sous la douche)",
+          displayText: "du tuyau d'évacuation (sous la douche)",
+        },
+        { text: "inconnu", displayText: "inconnu" },
+      ],
+    },
+    {
+      parentAnswers: ["fuite de baignoire"],
+      text: "d'où coule l'eau ?",
+      answers: [
+        { text: "du robinet", displayText: "du robinet" },
+        { text: "du tuyau d'évacuation", displayText: "du tuyau d'évacuation" },
+        { text: "inconnu", displayText: "inconnu" },
+      ],
+    },
+    {
+      parentAnswers: ["autre(douche)"],
+      text: "voulez-vous effectuer ?",
+      answers: [
+        {
+          text: "installation de bac à douche",
+          displayText: "installation de bac à douche",
+        },
+        {
+          text: "installation de baignoire",
+          displayText: "installation de baignoire",
+        },
+        {
+          text: "autre problème avec la douche",
+          displayText: "autre problème avec la douche",
+        },
+        {
+          text: "autre problème avec la baignoire",
+          displayText: "autre problème avec la baignoire",
+        },
+        {
+          text: "réfection des joints de la douche / baignoire",
+          displayText: "réfection des joints de la douche / baignoire",
+        },
+      ],
+    },
+    {
+      parentAnswers: ["je ne vois pas (recherche d'une fuite)"],
+      text: "quel type de recherche de fuite souhaitez-vous ?",
+      answers: [
+        {
+          text: "recherche de fuite simple",
+          displayText: "recherche de fuite simple",
+        },
+        {
+          text: "recherche de fuite encastrée",
+          displayText: "recherche de fuite encastrée",
+        },
+      ],
+    },
+    {
+      parentAnswers: ["réparation d'une panne"],
+      text: "votre problème est lié ?",
+      answers: [
+        { text: "au chauffage", displayText: "au chauffage" },
+        { text: "à l'eau chaude", displayText: "à l'eau chaude" },
+        {
+          text: "au chauffage et à l'eau chaude",
+          displayText: "au chauffage et à l'eau chaude",
+        },
+      ],
+    },
+    {
+      parentAnswers: ["installation"],
+      text: "quel objet est concerné par votre demande ?",
+      answers: [
+        { text: "chaudière", displayText: "chaudière" },
+        {
+          text: "chauffe-eau / chauffe-bain",
+          displayText: "chauffe-eau / chauffe-bain",
+        },
+        { text: "ballon d'eau chaude", displayText: "ballon d'eau chaude" },
+        {
+          text: "radiateur électrique / sèche-serviettes",
+          displayText: "radiateur électrique / sèche-serviettes",
+        },
       ],
     },
   ];
 
-  for (const dq of detailedQuestions) {
+  for (const lvl3 of level3Questions) {
     const question = questionRepo.create({
-      text: dq.text,
-      category: dq.category,
-      level: dq.level,
+      text: lvl3.text,
+      category: "plomberie",
+      level: 3,
     });
     await questionRepo.save(question);
 
-    for (const ansText of dq.answers) {
-      const answer = answerRepo.create({ text: ansText, question });
+    for (const ansText of lvl3.answers) {
+      const answer = answerRepo.create({
+        text: ansText.text,
+        displayText: ansText.displayText,
+        question,
+      });
       await answerRepo.save(answer);
     }
 
-    for (const parentText of dq.parentAnswerText) {
-      const parentAnswer = await answerRepo.findOneBy({ text: parentText });
-      if (parentAnswer) {
-        parentAnswer.nextQuestion = question;
-        await answerRepo.save(parentAnswer);
+    for (const parentText of lvl3.parentAnswers) {
+      const parent = await answerRepo.findOneBy({
+        text: parentText.toLowerCase(),
+      });
+      if (parent) {
+        parent.nextQuestion = question;
+        await answerRepo.save(parent);
       }
     }
   }
-
   await AppDataSource.destroy();
 };
 
-// Exécute le script de seeding
 seedQuestionsAnswers().catch(console.error);

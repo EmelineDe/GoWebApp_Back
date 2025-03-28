@@ -69,7 +69,7 @@ describe("AnswerController", () => {
      * Vérifie le retour de 404 si aucune question suivante n'est trouvée
      * @test
      */
-    it("should return 404 if no next question found", async () => {
+    it("should return 200 if no next question found", async () => {
       mockRequest.params = { id: "999" };
       (AnswersService.getAnswerWithNextQuestion as jest.Mock).mockResolvedValue(
         { nextQuestion: null }
@@ -80,10 +80,8 @@ describe("AnswerController", () => {
         mockResponse as Response
       );
 
-      expect(mockStatus).toHaveBeenCalledWith(404);
-      expect(mockJson).toHaveBeenCalledWith({
-        message: "Pas de question suivante.",
-      });
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ finished: true });
     });
 
     /**
@@ -103,7 +101,7 @@ describe("AnswerController", () => {
 
       expect(mockStatus).toHaveBeenCalledWith(404);
       expect(mockJson).toHaveBeenCalledWith({
-        message: "Pas de question suivante.",
+        error: "Réponse introuvable.",
       });
     });
 

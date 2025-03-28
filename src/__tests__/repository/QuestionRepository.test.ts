@@ -67,6 +67,7 @@ describe("QuestionsRepository", () => {
         {
           id: 1,
           text: "Réponse A",
+          displayText: "Réponse A",
           question: {
             id: 1,
             text: "Question 1",
@@ -78,6 +79,7 @@ describe("QuestionsRepository", () => {
         {
           id: 2,
           text: "Réponse B",
+          displayText: "Réponse B",
           question: {
             id: 1,
             text: "Question 1",

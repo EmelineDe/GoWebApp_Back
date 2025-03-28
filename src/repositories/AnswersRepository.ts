@@ -21,7 +21,11 @@ export class AnswersRepository {
   static async findByIdWithNextQuestion(id: number): Promise<Answer | null> {
     return AppDataSource.getRepository(Answer).findOne({
       where: { id },
-      relations: ["nextQuestion"],
+      relations: {
+        nextQuestion: {
+          answers: true,
+        },
+      },
     });
   }
 
