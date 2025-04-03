@@ -44,8 +44,10 @@ src/
 
 ## 🚀 Installation & Démarrage
 
-### 1. Dézippez le projet
-Aucun `git clone` requis. Ouvrez simplement le dossier dézippé avec votre IDE.
+### 1. Assurez-vous que Docker est installé et en cours d'exécution
+
+> Vous pouvez vérifier avec : `docker --version`  
+> Sur Windows/Mac : lancez **Docker Desktop** avant de continuer.
 
 ### 2. Lancer les conteneurs
 
@@ -79,6 +81,14 @@ docker exec -it goweb-backend npm run seed
 - **Swagger** : [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 
 ---
+
+## 🧪 Tests unitaires
+
+### ✅ Lancer les tests (Jest)
+
+```bash
+npm test
+```
 
 ## 🥪 Endpoints principaux
 
