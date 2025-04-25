@@ -49,7 +49,17 @@ src/
 > Vous pouvez vérifier avec : `docker --version`  
 > Sur Windows/Mac : lancez **Docker Desktop** avant de continuer.
 
-### 2. Lancer les conteneurs
+### 2. Installation des dépendances
+
+Exécutez cette commande localement avant de démarrer les conteneurs pour garantir que toutes les dépendances sont correctement installées, 
+même si elles sont également gérées par Docker Compose. 
+Cette étape est recommandée par précaution :
+
+```bash
+npm install
+```
+
+### 3. Lancer les conteneurs
 
 ```bash
 docker-compose up -d
@@ -63,7 +73,7 @@ Ce qui démarre :
 
 ---
 
-### 3. Initialiser les données de base
+### 4. Initialiser les données de base
 
 > Insère toutes les questions/réponses du parcours "Plomberie"
 
