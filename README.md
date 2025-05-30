@@ -66,8 +66,8 @@ docker-compose up -d
 ```
 
 Ce qui démarre :
-- `goweb-db` (PostgreSQL)
-- `goweb-backend` (API)
+- `depannageapp-db` (PostgreSQL)
+- `depannageapp-backend` (API)
 
 📦 Base de données exposée sur `localhost:5432`
 
@@ -78,7 +78,7 @@ Ce qui démarre :
 > Insère toutes les questions/réponses du parcours "Plomberie"
 
 ```bash
-docker exec -it goweb-backend npm run seed
+docker exec -it depannageapp-backend npm run seed
 ```
 
 ✅ Les données sont persistées dans PostgreSQL.

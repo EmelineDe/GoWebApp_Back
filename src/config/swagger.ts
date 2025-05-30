@@ -10,7 +10,7 @@ import swaggerJSDoc from "swagger-jsdoc";
  * @type {swaggerJSDoc.Options}
  * @description Configure la documentation de l'API avec les paramètres suivants :
  * - Version OpenAPI : 3.0.0
- * - Titre : API Goweb
+ * - Titre : API DepannageApp
  * - Version : 1.0.0
  * - Serveur : http://localhost:3000
  * - Fichiers de documentation : ./src/docs/*.yaml
@@ -19,7 +19,7 @@ export const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "API Goweb",
+      title: "API DepannageApp",
       version: "1.0.0",
       description:
         "Documentation de l'API du formulaire de qualification de chantier",

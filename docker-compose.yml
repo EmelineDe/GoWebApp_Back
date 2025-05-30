@@ -1,7 +1,7 @@
 services:
   backend:
     build: .
-    container_name: goweb-backend
+    container_name: depannageapp-backend
     ports:
       - "3000:3000"
     volumes:
@@ -11,15 +11,15 @@ services:
       - .env
     depends_on:
       - postgres
-    command: npm run dev 
+    command: npm run dev
 
   postgres:
     image: postgres:15
-    container_name: goweb-db
+    container_name: depannageapp-db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: gowebapp
-      POSTGRES_DB: goweb
+      POSTGRES_PASSWORD: depannageapp
+      POSTGRES_DB: Depannage
     ports:
       - "5432:5432"
     volumes:
