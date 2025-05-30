@@ -1,6 +1,6 @@
-# 🚧 Projet Goweb Backend 
+# 🚧 Projet DepannageApp Backend 
 
-Ce backend constitue la partie API de l'application Goweb.  
+Ce backend constitue la partie API de l'application DepannageApp.  
 Il permet de construire dynamiquement un parcours de questions/réponses pour qualifier une demande de dépannage (cas POC : plomberie).
 
 ---
@@ -126,7 +126,7 @@ npm test
 
 ## 🤝 Auteur
 
-Réalisé par Emeline Delobel dans le cadre du test technique pour **Goweb**
+Réalisé par Emeline Delobel 
 
 ---
 
